@@ -1,10 +1,10 @@
 # What is this ?
 
-Syntax highlighting of /etc/network/interfaces for **vim**
+* Syntax highlighting of /etc/network/interfaces for **vim**
 
-It is based on https://github.com/baitsalem/vim-interfaces
+* It is based on https://github.com/baitsalem/vim-interfaces
 
-![Example](./screenshots/GNS3_Attack_with_KaliLinux.png)
+![Example](./screenshots/example_1_vim_etc_network_interfaces.png)
 
 * Remaining features to be implemented: IPv6
 
