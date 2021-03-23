@@ -1,1 +1,1 @@
-autocmd BufNewFile,BufRead interfaces,vwifi.conf set filetype=interface
+autocmd BufNewFile,BufRead interfaces set filetype=interface
