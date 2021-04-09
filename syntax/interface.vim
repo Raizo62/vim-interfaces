@@ -10,7 +10,6 @@ syntax keyword sourceKeyword source contained
 
 "setting shared variables
 
-
 let essid = '(("[[:alnum:] \._-]+")|[[:alnum:] \._-]+)'
 
 let inetName1 = '((en|wl)[ospx][0-9a-z]+)([:.]\d{1,4})*'
@@ -53,11 +52,9 @@ exe 'syntax match interfaceNames /\v' . inetName3 .'/ contained'
 exe 'syntax match interfaceNamesNotLo /\v' . inetName1 .'/ contained'
 exe 'syntax match interfaceNamesNotLo /\v' . inetName2 .'/ contained'
 
-
 "auto line
 exe 'syntax match autoLine /' . '\v^\s*(auto|allow-hotplug)(\s+' . inetName1 . '|\s+' . inetName2 . ')+\s*$/ contains=interfaceNamesNotLo'
 exe 'syntax match autoLine /' . '\v^\s*(auto)(\s+' . inetName1 . '|\s+' . inetName2 . '|\s+' . inetName3 .  ')+\s*$/ contains=interfaceNames'
-
 
 " Interface settings
 exe 'syntax match interfaceSetLine /' . '\v^\s*(iface)\s+' . inetName1  . '\s+inet\s+(static|dhcp|loopback|manual)\s*$' .  '/ contains=interfaceMode,interfaceNames'
@@ -70,7 +67,6 @@ exe 'syntax match interfaceDescription /\v^\s*(description)\s+/ nextgroup=commen
 let afterkey = '(systemctl|ifconfig|ip|route|add|del|-net|-host|default|netmask|gw|via|dev|modprobe|rule|from|table|\s)'
 exe 'syntax match afterKey /\v' . afterkey .'/ contained'
 exe 'syntax match upSyntax /' . '\v^\s*(post-up|pre-up|up|down)\s+(' . afterkey . '|'  . ip . ')+' . '\s*$' .  '/ contains=interfaceIp,afterKey'
-
 
 " set address of host and gateway
 exe 'syntax match address_line /' .  '\v^\s*(address|gateway|broadcast)\s+' . ip  . '\s*$' . '/ contains=interfaceIp'
@@ -95,10 +91,6 @@ exe 'syntax match wpa_conf /' .  '\v^\s*(wpa-conf)\s+' . '\p+'  . '\s*$' . '/ co
 exe 'syntax match wireless_key /' .  '\v^\s*(wireless-key)\s+' . passwd  . '\s*$' . '/ contains=wirelessKeyword'
 exe 'syntax match wireless_key_off /' .  '\v^\s*(wireless-key)\s+' . wkey  . '\s*$' . '/ contains=wirelessKeyword'
 
-
-
-
-
 "link to colors
 
 hi link commented cblue
@@ -117,7 +109,6 @@ hi link wirelessKeyword cwhite
 hi link sourceKeyword cwhite
 hi link afterKey cgreen
 
-
 hi link source cyellow
 hi link wireless_essid cyellow
 hi link wireless_channel cmagenta
@@ -135,7 +126,6 @@ hi link netmask_line cwhite
 hi link interfaceKeyword cgreen
 hi link upSyntax cwhite
 
-
 "define colors
 highlight cred ctermfg=Red
 highlight cblue ctermfg=Blue
@@ -145,6 +135,5 @@ highlight cgreen ctermfg=Green
 highlight cwhite ctermfg=White
 highlight cyellow ctermfg=Yellow
 highlight cgray ctermfg=DarkGray
-
 
 let b:current_syntax = "interface"
