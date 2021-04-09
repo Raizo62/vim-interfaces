@@ -80,13 +80,15 @@ exe 'syntax match netmask_line /' .  '\v^\s*(netmask)\s+' . netmask2  . '\s*$' .
 let mode = '(ad-hoc|managed)'
 let wkey = '(off|on)'
 let passwd = '\p+'
+let wpadriver = '(wired|nl80211)'
 
-syntax match wirelessKeyword  '\v(wpa-psk|wpa-conf|wireless-key|wireless-essid|wireless-channel|wireless-mode|wpa-ssid)' contained
+syntax match wirelessKeyword  '\v(wpa-psk|wpa-conf|wpa-driver|wireless-key|wireless-essid|wireless-channel|wireless-mode|wpa-ssid)' contained
 exe 'syntax match wireless_essid /' .  '\v^\s*(wireless-essid)\s+' . essid  . '\s*$' . '/ contains=wirelessKeyword'
 exe 'syntax match wireless_channel  /' .  '\v^\s*(wireless-channel)\s+\d{1,2}\s*$' . '/ contains=wirelessKeyword'
 exe 'syntax match wireless_mode /' .  '\v^\s*(wireless-mode)\s+' . mode  . '\s*$' . '/ contains=wirelessKeyword'
 exe 'syntax match wpa_essid /' .  '\v^\s*(wpa-ssid)\s+' . essid  . '\s*$' . '/ contains=wirelessKeyword'
 exe 'syntax match wpa_psk /' .  '\v^\s*(wpa-psk)\s+' . passwd  . '\s*$' . '/ contains=wirelessKeyword'
+exe 'syntax match wpa_driver /' .  '\v^\s*(wpa-driver)\s+' . wpadriver  . '\s*$' . '/ contains=wirelessKeyword'
 exe 'syntax match wpa_conf /' .  '\v^\s*(wpa-conf)\s+' . '\p+'  . '\s*$' . '/ contains=wirelessKeyword'
 exe 'syntax match wireless_key /' .  '\v^\s*(wireless-key)\s+' . passwd  . '\s*$' . '/ contains=wirelessKeyword'
 exe 'syntax match wireless_key_off /' .  '\v^\s*(wireless-key)\s+' . wkey  . '\s*$' . '/ contains=wirelessKeyword'
@@ -118,6 +120,7 @@ hi link wireless_key cgray
 hi link wpa_psk cgray
 hi link wpa_essid cyellow
 hi link wpa_conf cyellow
+hi link wpa_driver cwhite
 
 hi link autoLine cwhite
 hi link interfaceSetLine cwhite
