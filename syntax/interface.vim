@@ -22,15 +22,15 @@ let ip = '([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,2})?'
 let netmask1 = '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'
 let netmask2 = '\d{1,2}'
 
+syntax match commented '.*' contained
+
 let mac  = '([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}'
 
 "source path
 syntax match source '\v^\s*source\s+\p+\s*$' contains=sourceKeyword
 
 "Comment
-syn keyword	todo		TODO XXX contained
-syntax match interfaceComment "\v^[[:space:]]*#.*$" contains=todo
-
+syntax match fileComment '^[[:space:]]*#' nextgroup=commented
 
 "interface Mode
 syntax keyword interfaceMode static dhcp loopback manual
@@ -64,7 +64,8 @@ exe 'syntax match interfaceSetLine /' . '\v^\s*(iface)\s+' . inetName1  . '\s+in
 exe 'syntax match interfaceSetLine /' . '\v^\s*(iface)\s+' . inetName2  . '\s+inet\s+(static|dhcp|loopback|manual)\s*$' .  '/ contains=interfaceMode,interfaceNames'
 exe 'syntax match interfaceSetLine /' . '\v^\s*(iface)\s+' . inetName3  . '\s+inet\s+(static|dhcp|loopback)\s*$' .  '/ contains=interfaceMode,interfaceNames'
 
-
+" set description
+exe 'syntax match interfaceDescription /\v^\s*(description)\s+/ nextgroup=commented'
 
 let afterkey = '(systemctl|ifconfig|ip|route|add|del|-net|-host|default|netmask|gw|via|dev|modprobe|rule|from|table|\s)'
 exe 'syntax match afterKey /\v' . afterkey .'/ contained'
@@ -100,7 +101,11 @@ exe 'syntax match wireless_key_off /' .  '\v^\s*(wireless-key)\s+' . wkey  . '\s
 
 "link to colors
 
-hi link interfaceComment cblue
+hi link commented cblue
+
+hi link fileComment cblue
+
+hi link interfaceDescription cwhite
 hi link interfaceMode ccyan
 hi link interfaceNetmask cmagenta
 hi link interfaceIP cmagenta
