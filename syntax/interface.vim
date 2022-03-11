@@ -25,8 +25,11 @@ syntax match commented '.*' contained
 
 let mac  = '([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}'
 
-"source path
-syntax match source '\v^\s*source\s+\p+\s*$' contains=sourceKeyword
+" name of file (absolute path)
+syntax match pathfile  '\v\/[a-zA-Z]\p+' contained
+
+"command source path
+syntax match sourceKeyword '\v^\s*source\s+\p+\s*$' contains=pathfile
 
 "Comment
 syntax match fileComment '^[[:space:]]*#' nextgroup=commented
@@ -111,7 +114,7 @@ hi link wirelessKeyword cwhite
 hi link sourceKeyword cwhite
 hi link afterKey cgreen
 
-hi link source cyellow
+hi link pathfile cyellow
 hi link wireless_essid cyellow
 hi link wireless_channel cmagenta
 hi link wireless_mode cwhite
