@@ -70,6 +70,10 @@ exe 'syntax match interfaceDescription /\v^\s*(description)\s+/ nextgroup=commen
 let afterkey = '(systemctl|ifconfig|ip|route|add|del|-net|-host|default|netmask|gw|via|dev|modprobe|rule|from|table|\s)'
 exe 'syntax match afterKey /\v' . afterkey .'/ contained'
 exe 'syntax match upSyntax /' . '\v^\s*(post-up|pre-up|up|down)\s+(' . afterkey . '|'  . ip . ')+' . '\s*$' .  '/ contains=interfaceIp,afterKey'
+let afterkeydns = '(echo|nameserver|domain|search)'
+exe 'syntax match afterKeydns /\v' . afterkeydns .'\s/ contained'
+exe 'syntax match upSyntax /' . '\v^\s*(post-up|pre-up|up|down)\s+echo\s+nameserver\s+' . ip . '\s+\>{1,2}\s+\p+\s*$' .  '/ contains=interfaceIp,afterkeydns,pathfile'
+exe 'syntax match upSyntax /' . '\v^\s*(post-up|pre-up|up|down)\s+echo\s+(domain|search)\s+\S+\s+\>{1,2}\s+\p+\s*$' .  '/ contains=afterkeydns,pathfile'
 
 " set address of host and gateway
 exe 'syntax match address_line /' .  '\v^\s*(address|gateway|broadcast)\s+' . ip  . '\s*$' . '/ contains=interfaceIp'
@@ -113,6 +117,7 @@ hi link interfaceOptions cwhite
 hi link wirelessKeyword cwhite
 hi link sourceKeyword cwhite
 hi link afterKey cgreen
+hi link afterKeydns cgreen
 
 hi link pathfile cyellow
 hi link wireless_essid cyellow
