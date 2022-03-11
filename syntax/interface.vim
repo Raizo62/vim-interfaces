@@ -67,7 +67,7 @@ exe 'syntax match interfaceSetLine /' . '\v^\s*(iface)\s+' . inetName3  . '\s+in
 " set description
 exe 'syntax match interfaceDescription /\v^\s*(description)\s+/ nextgroup=commented'
 
-let afterkey = '(systemctl|ifconfig|ip|route|add|del|-net|-host|default|netmask|gw|via|dev|modprobe|rule|from|table|\s)'
+let afterkey = '(ifconfig|ip|route|add|del|-net|-host|default|netmask|gw|via|dev|modprobe|rule|from|table|systemctl|start|stop|restart|\s)'
 exe 'syntax match afterKey /\v' . afterkey .'/ contained'
 exe 'syntax match upSyntax /' . '\v^\s*(post-up|pre-up|up|down)\s+(' . afterkey . '|'  . ip . ')+' . '\s*$' .  '/ contains=interfaceIp,afterKey'
 let afterkeydns = '(echo|nameserver|domain|search)'
