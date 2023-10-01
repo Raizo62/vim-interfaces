@@ -10,9 +10,9 @@
 
 # Installation
 
-* Copy files in /usr/share/vim/vim82/
+* Copy files in /usr/share/vim/vim90/
 ```bash
-cp -R ftdetect ftplugin syntax /usr/share/vim/vim82/
+cp -R ftdetect ftplugin syntax /usr/share/vim/vim90/
 ```
 
 * If not already do, enable syntax highlighting in vim
