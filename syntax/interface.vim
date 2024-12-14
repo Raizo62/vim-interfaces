@@ -21,6 +21,8 @@ let ip = '([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,2})?'
 let netmask1 = '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'
 let netmask2 = '\d{1,2}'
 
+let switch = '(off|on)'
+
 syntax match commented '.*' contained
 
 let mac  = '([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}'
@@ -85,7 +87,6 @@ exe 'syntax match netmask_line /' .  '\v^\s*(netmask)\s+' . netmask2  . '\s*$' .
 
 " wireless settings
 let mode = '(ad-hoc|managed)'
-let wkey = '(off|on)'
 let passwd = '\p+'
 let wpadriver = '(wired|nl80211)'
 
@@ -98,7 +99,7 @@ exe 'syntax match wpa_psk /' .  '\v^\s*(wpa-psk)\s+' . passwd  . '\s*$' . '/ con
 exe 'syntax match wpa_driver /' .  '\v^\s*(wpa-driver)\s+' . wpadriver  . '\s*$' . '/ contains=wirelessKeyword'
 exe 'syntax match wpa_conf /' .  '\v^\s*(wpa-conf)\s+' . '\p+'  . '\s*$' . '/ contains=wirelessKeyword'
 exe 'syntax match wireless_key /' .  '\v^\s*(wireless-key)\s+' . passwd  . '\s*$' . '/ contains=wirelessKeyword'
-exe 'syntax match wireless_key_off /' .  '\v^\s*(wireless-key)\s+' . wkey  . '\s*$' . '/ contains=wirelessKeyword'
+exe 'syntax match wireless_key_off /' .  '\v^\s*(wireless-key)\s+' . switch  . '\s*$' . '/ contains=wirelessKeyword'
 
 "link to colors
 
