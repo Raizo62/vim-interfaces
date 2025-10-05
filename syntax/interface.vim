@@ -18,7 +18,7 @@ let inetName3= 'lo'
 "let ip = '(([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,3})?) | (([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,3})?\/\d{2})'
 let ip = '([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,2})?'
 
-let netmask1 = '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'
+let netmask1 = '([0-9]{1,3}\.){3}[0-9]{1,3}'
 let netmask2 = '\d{1,2}'
 
 let switch = '(off|on)'
@@ -39,11 +39,11 @@ syntax match fileComment '^[[:space:]]*#' nextgroup=commented
 "interface Mode
 syntax keyword interfaceMode static dhcp loopback manual
 
-" netmask
+" netmask - capture complete IP including dots
 exe 'syntax match interfaceNetmask /\v' . netmask1 . '/ contained'
 exe 'syntax match interfaceNetmask /\v' . netmask2 . '/ contained'
 
-"ipv4
+"ipv4 - capture complete IP including dots
 exe 'syntax match interfaceIp /\v' . ip .  '/ contained'
 
 "mac
@@ -77,13 +77,17 @@ exe 'syntax match afterKeydns /\v' . afterkeydns .'\s/ contained'
 exe 'syntax match upSyntax /' . '\v^\s*(post-up|pre-up|up|down)\s+echo\s+nameserver\s+' . ip . '\s+\>{1,2}\s+\p+\s*$' .  '/ contains=interfaceIp,afterkeydns,pathfile'
 exe 'syntax match upSyntax /' . '\v^\s*(post-up|pre-up|up|down)\s+echo\s+(domain|search)\s+\S+\s+\>{1,2}\s+\p+\s*$' .  '/ contains=afterkeydns,pathfile'
 
-" set address of host and gateway
-exe 'syntax match address_line /' .  '\v^\s*(address|gateway|broadcast)\s+' . ip  . '\s*$' . '/ contains=interfaceIp'
+" set address of host and gateway - keywords in white, IP in magenta
+exe 'syntax match address_line /' .  '\v^\s*(address|gateway|broadcast)(\s+)(' . ip  . ')(\s*)$' . '/'
+exe 'syntax match address_keyword /\v^\s*(address|gateway|broadcast)/ contained containedin=address_line'
+exe 'syntax match address_ip /\v' . ip . '/ contained containedin=address_line'
 
-" set netmask
-
-exe 'syntax match netmask_line /' .  '\v^\s*(netmask)\s+' . netmask1  . '\s*$' . '/ contains=interfaceNetmask'
-exe 'syntax match netmask_line /' .  '\v^\s*(netmask)\s+' . netmask2  . '\s*$' . '/ contains=interfaceNetmask'
+" set netmask - keyword in white, netmask in magenta
+exe 'syntax match netmask_line_dotted /' .  '\v^\s*(netmask)(\s+)(' . netmask1  . ')(\s*)$' . '/'
+exe 'syntax match netmask_line_cidr /' .  '\v^\s*(netmask)(\s+)(' . netmask2  . ')(\s*)$' . '/'
+exe 'syntax match netmask_keyword /\vnetmask/ contained containedin=netmask_line_dotted,netmask_line_cidr'
+exe 'syntax match netmask_dotted /\v' . netmask1 . '/ contained containedin=netmask_line_dotted'
+exe 'syntax match netmask_cidr /\v' . netmask2 . '/ contained containedin=netmask_line_cidr'
 
 " wireless settings
 let mode = '(ad-hoc|managed)'
@@ -116,7 +120,7 @@ hi link fileComment cblue
 hi link interfaceDescription cwhite
 hi link interfaceMode ccyan
 hi link interfaceNetmask cmagenta
-hi link interfaceIP cmagenta
+hi link interfaceIp cmagenta
 hi link macSyntax cmagenta
 hi link interfaceNames cred
 hi link interfaceNamesNotLo cred
@@ -140,7 +144,13 @@ hi link wpa_driver cwhite
 hi link autoLine cwhite
 hi link interfaceSetLine cwhite
 hi link address_line cwhite
-hi link netmask_line cwhite
+hi link netmask_line_dotted cwhite
+hi link netmask_line_cidr cwhite
+hi link address_keyword cwhite
+hi link netmask_keyword cwhite
+hi link address_ip cmagenta
+hi link netmask_dotted cmagenta
+hi link netmask_cidr cmagenta
 hi link interfaceKeyword cgreen
 hi link upSyntax cwhite
 
