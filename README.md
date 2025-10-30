@@ -10,7 +10,7 @@
 
 # Installation
 
-* Copy files in /usr/share/vim/vim90/
+* Copy files in /usr/share/vim/vim91/
 ```bash
 cp -R ftdetect ftplugin syntax /usr/share/vim/vim90/
 ```
