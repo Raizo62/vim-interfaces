@@ -2,6 +2,9 @@ if exists("b:current_syntax")
 	finish
 endif
 
+" Force old regex engine to avoid NFA limits
+set re=1
+
 syntax keyword interfaceOptions metric pointopoint media hwaddress ether mtu hostname
 syntax keyword interfaceOptions leasehours leasetime vendor client bootfile server hwaddr provider frame netnum endpoint local ttl network
 syntax keyword interfaceKeyword mapping script  down post-down map
@@ -14,7 +17,7 @@ let essid = '("[[:alnum:] \._-]+"|[[:alnum:] \._-]+)'
 
 let inetName1 = '(en|wl)[ospx][0-9a-z]+([:.]\d{1,4})*'
 let inetName2 = '(wlan|eth|vlan|br|bond|tap|tun|virbr|vrrp)\d+([:.]\d{1,4})*'
-let inetName3= 'lo'
+let inetName3= 'lo(:\d{1,4})*'
 "let ip = '(([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,3})?) | (([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,3})?\/\d{2})'
 let ip = '([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,2})?'
 
@@ -69,9 +72,11 @@ exe 'syntax match interfaceSetLine /' . '\v^\s*(iface)\s+' . inetName3  . '\s+in
 " set description
 exe 'syntax match interfaceDescription /\v^\s*(description)\s+/ nextgroup=commented'
 
-let afterkey = '(ifconfig|ip|route|add|del|-net|-host|default|netmask|gw|via|dev|modprobe|rule|from|table|metric|systemctl|start|stop|restart|\s)'
-exe 'syntax match afterKey /\v' . afterkey .'/ contained'
-exe 'syntax match upSyntax /' . '\v^\s*(post-up|pre-up|up|down)\s+(' . afterkey . '|' . ip . '|' . inetName1 . '|' . inetName2 . '|' . inetName3 . '| \d+'  . ')+' . '\s*$' .  '/ contains=interfaceIp,afterKey,interfaceNames'
+let afterkey = 'ifconfig\|ip\|route\|add\|del\|-net\|-host\|default\|netmask\|gw\|via\|dev\|modprobe\|rule\|from\|table\|metric\|systemctl\|start\|stop\|restart'
+let afterkey_v = substitute(afterkey, '\\|', '|', 'g')
+" Match ONLY complete valid up/down lines - every token must be either a keyword or an IP
+exe 'syntax match upSyntax /' . '\v^\s*(post-up|pre-up|up|down)\s+(' . afterkey_v . ')(\s+(' . afterkey_v . '|' . ip . '))*\s*$' .  '/ contains=interfaceIp,afterKey'
+exe 'syn match afterKey /\<\(' . afterkey . '\)\>/ contained'
 let afterkeydns = '(echo|nameserver|domain|search)'
 exe 'syntax match afterKeydns /\v' . afterkeydns .'\s/ contained'
 exe 'syntax match upSyntax /' . '\v^\s*(post-up|pre-up|up|down)\s+echo\s+nameserver\s+' . ip . '\s+\>{1,2}\s+\p+\s*$' .  '/ contains=interfaceIp,afterkeydns,pathfile'
