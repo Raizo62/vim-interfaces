@@ -10,7 +10,7 @@ syntax keyword sourceKeyword source contained
 
 "setting shared variables
 
-let essid = '(("[[:alnum:] \._-]+")|[[:alnum:] \._-]+)'
+let essid = '("[[:alnum:] \._-]+"|[[:alnum:] \._-]+)'
 
 let inetName1 = '(en|wl)[ospx][0-9a-z]+([:.]\d{1,4})*'
 let inetName2 = '(wlan|eth|vlan|br|bond|tap|tun|virbr|vrrp)\d+([:.]\d{1,4})*'
@@ -95,12 +95,12 @@ let passwd = '\p+'
 let wpadriver = '(wired|nl80211)'
 
 " bridge
-let bridgeKeyword = '(bridge_(fd|maxwait|waitport)\s)'
+let bridgeKeyword = 'bridge_(fd|maxwait|waitport)\s'
 exe 'syntax match bridge /' . '\v^\s*bridge_ports(\s+' . inetName1 . '|\s+' . inetName2 . '|\s+' . inetName3 .  ')+\s*$/ contains=interfaceNames'
 exe 'syntax match bridge /' .  '\v^\s*bridge_stp\s+' . switch  . '$' . '/ contains=wirelessKeyword'
 exe 'syntax match bridge /' . '\v^\s*bridge_(fd|maxwait|waitport)\s+[0-9]+$' . '/ contains=bridgeKeyword'
 
-syntax match wirelessKeyword  '\v(wpa-psk|wpa-conf|wpa-driver|wireless-key|wireless-essid|wireless-channel|wireless-mode|wpa-ssid)' contained
+syntax match wirelessKeyword  '\vwpa-psk|wpa-conf|wpa-driver|wireless-key|wireless-essid|wireless-channel|wireless-mode|wpa-ssid' contained
 exe 'syntax match wireless_essid /' .  '\v^\s*(wireless-essid)\s+' . essid  . '\s*$' . '/ contains=wirelessKeyword'
 exe 'syntax match wireless_channel  /' .  '\v^\s*(wireless-channel)\s+\d{1,2}\s*$' . '/ contains=wirelessKeyword'
 exe 'syntax match wireless_mode /' .  '\v^\s*(wireless-mode)\s+' . mode  . '\s*$' . '/ contains=wirelessKeyword'
