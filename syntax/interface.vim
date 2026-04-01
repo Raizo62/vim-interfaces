@@ -105,9 +105,10 @@ exe 'syntax match bridge /' . '\v^\s*bridge_ports(\s+' . inetName1 . '|\s+' . in
 exe 'syntax match bridge /' .  '\v^\s*bridge_stp\s+' . switch  . '$' . '/ contains=wirelessKeyword'
 exe 'syntax match bridge /' . '\v^\s*bridge_(fd|maxwait|waitport)\s+[0-9]+$' . '/ contains=bridgeKeyword'
 
-syntax match wirelessKeyword  '\vwpa-psk|wpa-conf|wpa-driver|wireless-key|wireless-essid|wireless-channel|wireless-mode|wpa-ssid' contained
+syntax match wirelessKeyword  '\vwpa-psk|wpa-conf|wpa-driver|wpa-channel|wireless-key|wireless-essid|wireless-channel|wireless-mode|wpa-ssid' contained
 exe 'syntax match wireless_essid /' .  '\v^\s*(wireless-essid)\s+' . essid  . '\s*$' . '/ contains=wirelessKeyword'
 exe 'syntax match wireless_channel  /' .  '\v^\s*(wireless-channel)\s+\d{1,2}\s*$' . '/ contains=wirelessKeyword'
+exe 'syntax match wpa_channel  /' .  '\v^\s*(wpa-channel)\s+\d{1,2}\s*$' . '/ contains=wirelessKeyword'
 exe 'syntax match wireless_mode /' .  '\v^\s*(wireless-mode)\s+' . mode  . '\s*$' . '/ contains=wirelessKeyword'
 exe 'syntax match wpa_essid /' .  '\v^\s*(wpa-ssid)\s+' . essid  . '\s*$' . '/ contains=wirelessKeyword'
 exe 'syntax match wpa_psk /' .  '\v^\s*(wpa-psk)\s+' . passwd  . '\s*$' . '/ contains=wirelessKeyword'
@@ -138,6 +139,7 @@ hi link afterKeydns cgreen
 hi link pathfile cyellow
 hi link wireless_essid cyellow
 hi link wireless_channel cmagenta
+hi link wpa_channel cmagenta
 hi link wireless_mode cwhite
 hi link wireless_key_off cwhite
 hi link wireless_key cgray
