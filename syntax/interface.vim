@@ -98,6 +98,7 @@ exe 'syntax match netmask_cidr /\v' . netmask2 . '/ contained containedin=netmas
 let mode = '(ad-hoc|managed)'
 let passwd = '\p+'
 let wpadriver = '(wired|nl80211)'
+let wpakeymgmt = '(NONE|WPA-PSK|WPA-EAP|SAE|OWE)'
 
 " bridge
 let bridgeKeyword = 'bridge_(fd|maxwait|waitport)\s'
@@ -105,12 +106,13 @@ exe 'syntax match bridge /' . '\v^\s*bridge_ports(\s+' . inetName1 . '|\s+' . in
 exe 'syntax match bridge /' .  '\v^\s*bridge_stp\s+' . switch  . '$' . '/ contains=wirelessKeyword'
 exe 'syntax match bridge /' . '\v^\s*bridge_(fd|maxwait|waitport)\s+[0-9]+$' . '/ contains=bridgeKeyword'
 
-syntax match wirelessKeyword  '\vwpa-psk|wpa-conf|wpa-driver|wpa-channel|wireless-key|wireless-essid|wireless-channel|wireless-mode|wpa-ssid' contained
+syntax match wirelessKeyword  '\vwpa-psk|wpa-conf|wpa-driver|wpa-channel|wpa-key-mgmt|wireless-key|wireless-essid|wireless-channel|wireless-mode|wpa-ssid' contained
 exe 'syntax match wireless_essid /' .  '\v^\s*(wireless-essid)\s+' . essid  . '\s*$' . '/ contains=wirelessKeyword'
 exe 'syntax match wireless_channel  /' .  '\v^\s*(wireless-channel)\s+\d{1,2}\s*$' . '/ contains=wirelessKeyword'
 exe 'syntax match wpa_channel  /' .  '\v^\s*(wpa-channel)\s+\d{1,2}\s*$' . '/ contains=wirelessKeyword'
 exe 'syntax match wireless_mode /' .  '\v^\s*(wireless-mode)\s+' . mode  . '\s*$' . '/ contains=wirelessKeyword'
 exe 'syntax match wpa_essid /' .  '\v^\s*(wpa-ssid)\s+' . essid  . '\s*$' . '/ contains=wirelessKeyword'
+exe 'syntax match wpa_key_mgmt /' .  '\v^\s*(wpa-key-mgmt)\s+' . wpakeymgmt  . '\s*$' . '/ contains=wirelessKeyword'
 exe 'syntax match wpa_psk /' .  '\v^\s*(wpa-psk)\s+' . passwd  . '\s*$' . '/ contains=wirelessKeyword'
 exe 'syntax match wpa_driver /' .  '\v^\s*(wpa-driver)\s+' . wpadriver  . '\s*$' . '/ contains=wirelessKeyword'
 exe 'syntax match wpa_conf /' .  '\v^\s*(wpa-conf)\s+' . '\p+'  . '\s*$' . '/ contains=wirelessKeyword'
@@ -143,6 +145,7 @@ hi link wpa_channel cmagenta
 hi link wireless_mode cwhite
 hi link wireless_key_off cwhite
 hi link wireless_key cgray
+hi link wpa_key_mgmt cwhite
 hi link wpa_psk cgray
 hi link wpa_essid cyellow
 hi link wpa_conf cyellow
